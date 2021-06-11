@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import PySimpleGUIWeb as sg
 
 # Define the window's contents
 layout = [[sg.Text("What's your name?")],

@@ -1,3 +1,13 @@
+numpy==1.20.3
+Pillow==8.2.0
 pip==20.1.1
+PySide2==5.15.2
 PySimpleGUI==4.43.0
+PySimpleGUIQt==0.35.0
+PySimpleGUIWeb==0.39.0
+PySimpleGUIWx==0.17.2
+remi==2020.3.10
 setuptools==47.1.0
+shiboken2==5.15.2
+six==1.16.0
+wxPython==4.1.1
