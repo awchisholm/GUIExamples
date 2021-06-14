@@ -32,6 +32,9 @@
     <Compile Include="matplotlib_example.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="multiple_format_image_viewer.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tkinter_example.py">
       <SubType>Code</SubType>
     </Compile>
