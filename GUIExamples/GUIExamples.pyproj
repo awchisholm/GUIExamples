@@ -32,6 +32,15 @@
     <Compile Include="matplotlib_example.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="gui_and_database.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="create_database_and_query.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="module1.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="multiple_format_image_viewer.py">
       <SubType>Code</SubType>
     </Compile>
@@ -51,7 +60,9 @@
     </Interpreter>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ps3.csv" />
     <Content Include="requirements.txt" />
+    <Content Include="example.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
