@@ -29,6 +29,9 @@
     <Compile Include="guizero_example.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="matplotlib_example.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tkinter_example.py">
       <SubType>Code</SubType>
     </Compile>
