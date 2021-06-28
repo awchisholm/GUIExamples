@@ -6,7 +6,7 @@ layout = [  [sg.Text("What's your name?")],     # Part 2 - The Layout
             [sg.Button('Ok')] ]
 
 # Create the window
-window = sg.Window('Window Title', layout)      # Part 3 - Window Defintion
+window = sg.Window('Window Title', layout)      # Part 3 - Window Definition
 
 # Display and interact with the Window
 event, values = window.read()                   # Part 4 - Event loop or Window.read call
