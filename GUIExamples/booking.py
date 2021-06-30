@@ -14,7 +14,7 @@ def show_login_status():
         loginstatus.value = "select login"
 
 def showlogin():
-    window.show()
+    login_window.show()
 
 def login():
     global loggedin
@@ -29,7 +29,7 @@ def login():
        user = username.value
     
     show_login_status()
-    window.hide()
+    login_window.hide()
     return
 
 def logout():
@@ -45,11 +45,13 @@ app = App(title="Booking")
 loginstatus = Text(app)
 show_login_status()
 
-window = Window(app, title = "Login", height=300, width=200)
-window.hide()
-username = TextBox(window)
-password = TextBox(window, hide_text=True)
-okpass = PushButton(window, command = login, text = 'OK')
+login_window = Window(app, title = "Login", height=300, width=200, layout='grid')
+login_window.hide()
+userprompt = Text(login_window, text='username', grid=[0,0])
+username = TextBox(login_window, grid=[1,0])
+passprompt = Text(login_window, text='password', grid=[0,1])
+password = TextBox(login_window, hide_text=True, grid=[1,1])
+okpass = PushButton(login_window, command = login, text = 'OK', grid=[1,2])
 login_button = PushButton(app, command = showlogin, text = 'Login')
 logout_button = PushButton(app, command = logout, text = 'Logout')
 
