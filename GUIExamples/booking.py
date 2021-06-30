@@ -13,7 +13,10 @@ def show_login_status():
         loginstatus.bg = 'red'
         loginstatus.value = "select login"
 
-def check_password():
+def showlogin():
+    window.show()
+
+def login():
     global loggedin
     global user
     conn = sql_handling.create_connection(db)
@@ -22,11 +25,11 @@ def check_password():
     loggedin = False
     user = ''
     if len(rows) == 1:
-       #info("the", "same")
        loggedin = True
        user = username.value
     
     show_login_status()
+    window.hide()
     return
 
 def logout():
@@ -42,9 +45,12 @@ app = App(title="Booking")
 loginstatus = Text(app)
 show_login_status()
 
-username = TextBox(app)
-password = TextBox(app, hide_text=True)
-login_button = PushButton(app, command=check_password, text = 'Login')
+window = Window(app, title = "Login", height=300, width=200)
+window.hide()
+username = TextBox(window)
+password = TextBox(window, hide_text=True)
+okpass = PushButton(window, command = login, text = 'OK')
+login_button = PushButton(app, command = showlogin, text = 'Login')
 logout_button = PushButton(app, command = logout, text = 'Logout')
 
 app.display()
