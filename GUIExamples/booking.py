@@ -1,4 +1,4 @@
-from guizero import App, Text, TextBox, PushButton, info
+from guizero import App, Text, TextBox, PushButton, info, Window
 import sql_handling 
 
 db = "booking.db"
