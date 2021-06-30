@@ -1,5 +1,6 @@
 from guizero import App, Text, TextBox, PushButton, info, Window
 import sql_handling 
+import hashlib
 
 db = "booking.db"
 loggedin = False
@@ -20,7 +21,11 @@ def login():
     global loggedin
     global user
     conn = sql_handling.create_connection(db)
-    query = "select password from users where username = '{0}' and password = '{1}'".format(username.value, password.value)
+    m = hashlib.sha256()
+    m.update(password.value.encode())
+    hashed_password = m.hexdigest()
+    #print(hashed_password)
+    query = "select password from users where username = '{0}' and password = '{1}'".format(username.value, hashed_password)
     rows = sql_handling.query_connection(conn, query)
     loggedin = False
     user = ''
