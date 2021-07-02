@@ -67,13 +67,12 @@ def get_available_dates():
 
 def date_chosen():
     chosen_date = date_chooser.value
-    print(type(chosen_date))
     conn = sql_handling.create_connection(db)
-    query = """select slots.maximum_available - bookings.number as availability
-	            from bookings 
-	            left join slots 
-	            on bookings.slotid=slots.slotid
-	            where slots.date like '%""" + chosen_date + "%'"
+    query = """select slots.maximum_available - total(bookings.number)
+	           from slots 
+	           left join bookings 
+	           on slots.slotid=bookings.slotid 
+	           where slots.date like '%""" + chosen_date + "%'"
     availability = sql_handling.query_connection(conn, query)
     print(availability)
     print(query)

@@ -20,7 +20,7 @@ CREATE TABLE bookings (
     constraint customerid_fk foreign key (customerid) references customers(customerid),
     constraint slotid_fk foreign key (slotid) references slots(slotid)
 );
-INSERT INTO bookings (bookingid, customerid, slotid, number) VALUES (1, 1, 1, 4), (2, 1, 4, 2), (3, 2, 5, 2);
+INSERT INTO bookings (bookingid, customerid, slotid, number) VALUES (1, 1, 1, 4), (2, 1, 4, 2), (3, 2, 5, 2), (4, 2, 1, 2);
 
 CREATE TABLE administrators (
     username TEXT,
