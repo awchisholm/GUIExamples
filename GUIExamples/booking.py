@@ -60,10 +60,23 @@ def get_available_dates():
     conn = sql_handling.create_connection(db)
     query = "select distinct slots.date from slots order by date asc"
     rows = sql_handling.query_connection(conn, query)
-    dates = [row[0].strftime("%m/%d/%Y, %H:%M:%S") for row in rows]
+    #dates = [row[0].strftime("%m/%d/%Y, %H:%M:%S") for row in rows]
+    dates = [row[0].strftime("%Y-%m-%d %H:%M:%S") for row in rows]
     #.strftime("%m/%d/%Y, %H:%M:%S")
     return(dates)
 
+def date_chosen():
+    chosen_date = date_chooser.value
+    print(type(chosen_date))
+    conn = sql_handling.create_connection(db)
+    query = """select slots.maximum_available - bookings.number as availability
+	            from bookings 
+	            left join slots 
+	            on bookings.slotid=slots.slotid
+	            where slots.date like '%""" + chosen_date + "%'"
+    availability = sql_handling.query_connection(conn, query)
+    print(availability)
+    print(query)
 
 app = App(title="Booking")
 loginstatus = Text(app)
@@ -84,6 +97,6 @@ booking_button = PushButton(app, command=handle_booking, text = 'Booking')
 booking_window = Window(app, title='Booking', height=300, width=200, layout='grid')
 booking_window.hide()
 
-date_chooser = ListBox(booking_window, items=get_available_dates(), grid=[0,0])
+date_chooser = ListBox(booking_window, items=get_available_dates(), command = date_chosen, grid=[0,0])
 
 app.display()
