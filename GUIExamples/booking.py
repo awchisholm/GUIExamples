@@ -1,7 +1,8 @@
-from guizero import App, Text, TextBox, PushButton, info, Window
+from guizero import App, Text, TextBox, PushButton, info, Window, ListBox
 import sql_handling 
 import create_booking_db
 import hashlib
+from datetime import datetime
 
 db = "booking_database.db"
 sql = 'create_booking_db.sql'
@@ -31,11 +32,13 @@ def login():
     hashed_password = m.hexdigest()
     query = "select password from administrators where username = '{0}' and password = '{1}'".format(username.value, hashed_password)
     rows = sql_handling.query_connection(conn, query)
+    conn.close()
     loggedin = False
     user = ''
     if len(rows) == 1:
-       loggedin = True
-       user = username.value
+        # We have logged in 
+        loggedin = True
+        user = username.value
     
     show_login_status()
     login_window.hide()
@@ -50,6 +53,18 @@ def logout():
     user = ''
     show_login_status()
 
+def handle_booking():
+    booking_window.show()
+
+def get_available_dates():
+    conn = sql_handling.create_connection(db)
+    query = "select distinct slots.date from slots order by date asc"
+    rows = sql_handling.query_connection(conn, query)
+    dates = [row[0].strftime("%m/%d/%Y, %H:%M:%S") for row in rows]
+    #.strftime("%m/%d/%Y, %H:%M:%S")
+    return(dates)
+
+
 app = App(title="Booking")
 loginstatus = Text(app)
 show_login_status()
@@ -63,5 +78,12 @@ password = TextBox(login_window, hide_text=True, grid=[1,1])
 okpass = PushButton(login_window, command = login, text = 'OK', grid=[1,2])
 login_button = PushButton(app, command = showlogin, text = 'Login')
 logout_button = PushButton(app, command = logout, text = 'Logout')
+
+booking_button = PushButton(app, command=handle_booking, text = 'Booking')
+
+booking_window = Window(app, title='Booking', height=300, width=200, layout='grid')
+booking_window.hide()
+
+date_chooser = ListBox(booking_window, items=get_available_dates(), grid=[0,0])
 
 app.display()

@@ -9,7 +9,7 @@ def create_connection(db_file):
     """
     conn = None
     try:
-        conn = sqlite3.connect(db_file)
+        conn = sqlite3.connect(db_file, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
     except Error as e:
         print(e)
 
@@ -25,6 +25,7 @@ def query_connection(conn, query):
     cur = conn.cursor()
     cur.execute(query)
     rows = cur.fetchall()
+    cur.close()
     return rows
 
 if __name__ == '__main__':
