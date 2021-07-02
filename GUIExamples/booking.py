@@ -29,7 +29,7 @@ def login():
     m = hashlib.sha256()
     m.update(password.value.encode())
     hashed_password = m.hexdigest()
-    query = "select password from userlogin where username = '{0}' and password = '{1}'".format(username.value, hashed_password)
+    query = "select password from administrators where username = '{0}' and password = '{1}'".format(username.value, hashed_password)
     rows = sql_handling.query_connection(conn, query)
     loggedin = False
     user = ''

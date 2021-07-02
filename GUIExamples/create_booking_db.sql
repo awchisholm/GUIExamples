@@ -1,9 +1,9 @@
-CREATE TABLE users (
+CREATE TABLE customers (
+	customerid BIGINT primary key not null,
 	firstname TEXT, 
-	surname TEXT, 
-	username TEXT primary key not null
+	surname TEXT
 );
-INSERT INTO users (firstname, surname, username) VALUES ('Andrew', 'Chisholm', 'andrew');
+INSERT INTO customers (customerid, firstname, surname) VALUES (1, 'Andrew', 'Chisholm');
 
 CREATE TABLE slots (
 	slotid BIGINT primary key not null, 
@@ -14,17 +14,16 @@ INSERT INTO slots (slotid, date, maximum_available) VALUES (1, '2021-10-01 12:00
 
 CREATE TABLE bookings (
 	bookingid BIGINT primary key not null, 
-	username TEXT, 
+	customerid BIGINT, 
 	slotid BIGINT, 
 	number BIGINT,
-    constraint username_fk foreign key (username) references users(username),
+    constraint customerid_fk foreign key (customerid) references customers(customerid),
     constraint slotid_fk foreign key (slotid) references slots(slotid)
 );
-INSERT INTO bookings (bookingid, username, slotid, number) VALUES (1, 'andrew', 1, 4);
+INSERT INTO bookings (bookingid, customerid, slotid, number) VALUES (1, 1, 1, 4);
 
-CREATE TABLE userlogin (
+CREATE TABLE administrators (
     username TEXT,
-    password TEXT,
-    constraint username_fk foreign key (username) references users(username)
+    password TEXT
 );
-INSERT INTO userlogin (username, password) VALUES ('andrew', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8')
+INSERT INTO administrators (username, password) VALUES ('andrew', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8')
