@@ -76,8 +76,12 @@ def date_chosen():
     availability = sql_handling.query_connection(conn, query)
     datefeedback.value = "" + str(int(availability[0][0])) + " slots available"
     datefeedback.visible=True
+    book_button.visible=True
     print(availability[0][0])
     print(query)
+
+def book_now():
+    print('Book now')
 
 app = App(title="Booking")
 loginstatus = Text(app)
@@ -102,5 +106,8 @@ datetext = Text(booking_window, 'Choose date', grid=[0,0])
 date_chooser = ListBox(booking_window, items=get_available_dates(), command = date_chosen, grid=[0,1])
 datefeedback = Text(booking_window, 'Chosen date', grid=[1,0])
 datefeedback.visible=False
+
+book_button = PushButton(booking_window, command=book_now, text='Book Now', grid=[1,1])
+book_button.visible=False
 
 app.display()
