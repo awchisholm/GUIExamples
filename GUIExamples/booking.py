@@ -74,7 +74,9 @@ def date_chosen():
 	           on slots.slotid=bookings.slotid 
 	           where slots.date like '%""" + chosen_date + "%'"
     availability = sql_handling.query_connection(conn, query)
-    print(availability)
+    datefeedback.value = "" + str(int(availability[0][0])) + " slots available"
+    datefeedback.visible=True
+    print(availability[0][0])
     print(query)
 
 app = App(title="Booking")
@@ -93,9 +95,12 @@ logout_button = PushButton(app, command = logout, text = 'Logout')
 
 booking_button = PushButton(app, command=handle_booking, text = 'Booking')
 
-booking_window = Window(app, title='Booking', height=300, width=200, layout='grid')
+booking_window = Window(app, title='Booking', height=300, width=600, layout='grid')
 booking_window.hide()
 
-date_chooser = ListBox(booking_window, items=get_available_dates(), command = date_chosen, grid=[0,0])
+datetext = Text(booking_window, 'Choose date', grid=[0,0])
+date_chooser = ListBox(booking_window, items=get_available_dates(), command = date_chosen, grid=[0,1])
+datefeedback = Text(booking_window, 'Chosen date', grid=[1,0])
+datefeedback.visible=False
 
 app.display()
