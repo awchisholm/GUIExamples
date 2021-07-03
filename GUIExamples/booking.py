@@ -82,6 +82,9 @@ def date_chosen():
 
 def book_now():
     print('Book now')
+    # insert into customers (customerid, firstname, surname) values (3, 'Steve', 'Woods')
+    # INSERT into bookings (bookingid, customerid, slotid, number)   values(5, 3, 3, 2)
+    # 
 
 app = App(title="Booking")
 loginstatus = Text(app)
