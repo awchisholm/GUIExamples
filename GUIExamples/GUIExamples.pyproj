@@ -22,6 +22,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="booking.py" />
+    <Compile Include="create_booking_db.py" />
     <Compile Include="GUIExamples.py" />
     <Compile Include="InteractiveWindow.py">
       <SubType>Code</SubType>
@@ -44,6 +46,7 @@
     <Compile Include="multiple_format_image_viewer.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="sql_handling.py" />
     <Compile Include="tkinter_example.py">
       <SubType>Code</SubType>
     </Compile>
@@ -60,6 +63,7 @@
     </Interpreter>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="create_booking_db.sql" />
     <Content Include="ps3.csv" />
     <Content Include="requirements.txt" />
     <Content Include="example.sql" />
