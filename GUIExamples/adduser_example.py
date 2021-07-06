@@ -1,5 +1,7 @@
 from tkinter import Grid
 from guizero import App, Text, TextBox, PushButton, info, Window, ListBox
+from datetime import datetime
+
 import sql_handling 
 import create_booking_db
 
@@ -45,22 +47,43 @@ def cancel():
     print('*** cancel')
     newuserwindow.hide()
 
+def getoldentries_raw():
+    print('*** getoldentries_raw')
+    conn = sql_handling.create_connection(db)
+    query = "select entry, timestamp from entries where username = '{0}' order by timestamp desc".format(username_main.value)
+    rows = sql_handling.query_connection(conn, query)
+    result = [row[0] for row in rows]
+    print(result)
+    return(result)
+
 def getoldentries():
     print('*** getoldentries')
-    conn = sql_handling.create_connection(db)
-    query = "select entry from entries where username = '{0}'".format(username_main.value)
-    rows = sql_handling.query_connection(conn, query)
+    rows = getoldentries_raw()
     result = ''.join([str(item[0])+'\n' for item in rows])  # convert list to string with a newline between each
+    print(result)
     return result
+
+def updatelistbox(items):
+    oldentries.clear()
+    for index in range(len(items)):
+        oldentries.insert(index, items[index])
 
 def addentry():
     print("*** addentry")
-    oldentries.value = getoldentries()
+    now = datetime.now()
+    now_string = now.strftime("%Y%m%d%H%M%S.%f")
+    items = getoldentries_raw()
+    updatelistbox(items)
     addentry_window.show(wait=True)
     conn = sql_handling.create_connection(db)
-    sql_statement = "insert into entries (username, entry) values ('{0}', '{1}')".format(username_main.value, newentry_window.value)
+    sql_statement = "insert into entries (username, entry, timestamp) values ('{0}', '{1}', '{2}')".format(username_main.value, newentry_window.value, now_string)
     rows = sql_handling.execute_sql(conn, sql_statement)
-    oldentries.value = getoldentries()
+    items = getoldentries_raw()
+    updatelistbox(items)
+
+def listentries(value):
+    print("***listentries")
+    print(value)
 
 create_booking_db.delete_db(db)
 create_booking_db.init_db(db,sql)
@@ -85,6 +108,7 @@ logoutbutton_newuser = PushButton(newuserwindow, command = cancel, text = 'Cance
 addentry_window = Window(app, title='Add an entry', visible = False, layout='grid')
 newentryprompt_window = PushButton(addentry_window, text='Add', command = addentry, grid = [1,0])
 newentry_window = TextBox(addentry_window, grid=[0,0])
-oldentries = TextBox(addentry_window, text=getoldentries(), grid = [0,1], multiline=True, height=10, width=40, scrollbar=True, enabled=False)
+#oldentries = TextBox(addentry_window, text=getoldentries(), grid = [0,1], multiline=True, height=10, width=40, scrollbar=True, enabled=True)
+oldentries = ListBox(addentry_window, items=getoldentries_raw(), grid = [0,1], enabled=True, command=listentries, multiselect=True)
 
 app.display()

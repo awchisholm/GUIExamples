@@ -5,5 +5,6 @@ CREATE TABLE users (
 
 CREATE TABLE entries (
     username TEXT,
-    entry TEXT
+    entry TEXT,
+    timestamp REAL unique
 )
