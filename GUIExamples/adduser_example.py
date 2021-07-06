@@ -11,7 +11,7 @@ loggedin = False
 username_global = ""
 
 def show_login_status():
-    global username_gloabl
+    global username_global
     if loggedin == True:
         loginstatus.bg = 'green'
         loginstatus.value = username_global
@@ -51,7 +51,6 @@ def logout():
     password.value = ''
     user = ''
     show_login_status()
-
 
 app = App(title="Booking")
 loginstatus = Text(app)
