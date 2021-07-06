@@ -1,12 +1,13 @@
+from os import truncate
 from tkinter import Grid
 from guizero import App, Text, TextBox, PushButton, info, Window, ListBox
 from datetime import datetime
 
-import sql_handling 
-import create_booking_db
+import sql_handling             # import my sql_handling module
+import create_booking_db        # import my create books db module
 
-db = 'adduser.db'
-sql = 'create_adduser.sql'
+db = 'adduser.db'               # the file containing the sqlite database
+sql = 'create_adduser.sql'      # the file containing the SQL DDL commands to create the database
 
 def login():
     print('*** login')
@@ -47,11 +48,16 @@ def cancel():
     print('*** cancel')
     newuserwindow.hide()
 
-def getoldentries_raw():
-    print('*** getoldentries_raw')
+def getoldentries_rawall():
+    print('*** getoldentries_rawall')
     conn = sql_handling.create_connection(db)
     query = "select entry, timestamp from entries where username = '{0}' order by timestamp desc".format(username_main.value)
     rows = sql_handling.query_connection(conn, query)
+    return rows
+
+def getoldentries_raw():
+    print('*** getoldentries_raw')
+    rows = getoldentries_rawall()
     result = [row[0] for row in rows]
     print(result)
     return(result)
@@ -85,6 +91,16 @@ def listentries(value):
     print("***listentries")
     print(value)
 
+def deletelatest():
+    print("*** deletelatest")
+    rows = getoldentries_rawall()
+    if len(rows) > 0:
+        conn = sql_handling.create_connection(db)
+        sql_statement = "delete from entries where timestamp = {0}".format(rows[0][1])
+        row = sql_handling.execute_sql(conn, sql_statement)
+    items = getoldentries_raw()
+    updatelistbox(items)
+
 create_booking_db.delete_db(db)
 create_booking_db.init_db(db,sql)
 
@@ -106,9 +122,10 @@ loginbutton_newuser = PushButton(newuserwindow, command = adduser, text = 'Add',
 logoutbutton_newuser = PushButton(newuserwindow, command = cancel, text = 'Cancel', grid=[3,0])
 
 addentry_window = Window(app, title='Add an entry', visible = False, layout='grid')
-newentryprompt_window = PushButton(addentry_window, text='Add', command = addentry, grid = [1,0])
 newentry_window = TextBox(addentry_window, grid=[0,0])
+newentryprompt_window = PushButton(addentry_window, text='Add', command = addentry, grid = [1,0])
 #oldentries = TextBox(addentry_window, text=getoldentries(), grid = [0,1], multiline=True, height=10, width=40, scrollbar=True, enabled=True)
-oldentries = ListBox(addentry_window, items=getoldentries_raw(), grid = [0,1], enabled=True, command=listentries, multiselect=True)
+oldentries = ListBox(addentry_window, items=getoldentries_raw(), grid = [0,1], enabled=True, command=listentries, multiselect=False)
+deletelast_window = PushButton(addentry_window, text='Delete latest', command=deletelatest, grid=[1,1])
 
 app.display()
