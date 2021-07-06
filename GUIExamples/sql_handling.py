@@ -28,5 +28,17 @@ def query_connection(conn, query):
     cur.close()
     return rows
 
+def execute_sql(conn, sql_statement):
+    """
+    Execute the provided SQL using the connection
+    :param conn: connection object
+    :param sql_statement: sql string
+    :return: nothing
+    """
+    cur = conn.cursor()
+    cur.execute(sql_statement)
+    conn.commit()
+    return cur.lastrowid
+
 if __name__ == '__main__':
     main()
