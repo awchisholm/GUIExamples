@@ -64,6 +64,7 @@
     </Interpreter>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BookingSystemSteps.xlsx" />
     <Content Include="create_adduser.sql" />
     <Content Include="create_booking_db.sql" />
     <Content Include="ps3.csv" />
