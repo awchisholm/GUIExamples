@@ -69,6 +69,7 @@
     <Content Include="ps3.csv" />
     <Content Include="requirements.txt" />
     <Content Include="example.sql" />
+    <Content Include="simple_entry.vsdx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
