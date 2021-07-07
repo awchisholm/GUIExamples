@@ -35,6 +35,7 @@ def execute_sql(conn, sql_statement):
     :param sql_statement: sql string
     :return: nothing
     """
+    conn.execute("PRAGMA foreign_keys = 1")
     cur = conn.cursor()
     cur.execute(sql_statement)
     conn.commit()
