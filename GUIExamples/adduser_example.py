@@ -30,17 +30,22 @@ def login():
 
 def logout():
     print('*** logout')
-    username_newuser.value = ''
-    password_newuser.value = ''
+    username_newuserwindow.value = ''
+    password_newuserwindow.value = ''
 
 def add():
     print('*** add')
+    username_newuserwindow.value=''
+    password_newuserwindow.value=''
+    firstname_newuserwindow.value=''
+    surname_newuserwindow.value=''
+    email_newuserwindow.value=''
     newuserwindow.show(wait=True)
 
 def adduser():
     print('*** adduser')
     conn = sql_handling.create_connection(db)
-    sql_statement = "insert into users (username, password) values ('{0}', '{1}')".format(username_newuser.value, password_newuser.value)
+    sql_statement = "insert into users (username, password, firstname, surname, email) values ('{0}', '{1}', '{2}', '{3}', '{4}')".format(username_newuserwindow.value, password_newuserwindow.value, firstname_newuserwindow.value, surname_newuserwindow.value, email_newuserwindow.value)
     rows = sql_handling.execute_sql(conn, sql_statement)
     newuserwindow.hide()
 
@@ -82,7 +87,7 @@ def addentry():
     updatelistbox(items)
     addentry_window.show(wait=True)
     conn = sql_handling.create_connection(db)
-    sql_statement = "insert into entries (username, entry, timestamp) values ('{0}', '{1}', '{2}')".format(username_main.value, newentry_window.value, now_string)
+    sql_statement = "insert into entries (username, entry, timestamp) values ('{0}', '{1}', '{2}')".format(username_main.value, newentry_entrywindow.value, now_string)
     rows = sql_handling.execute_sql(conn, sql_statement)
     items = getoldentries_raw()
     updatelistbox(items)
@@ -101,6 +106,46 @@ def deletelatest():
     items = getoldentries_raw()
     updatelistbox(items)
 
+def maintainuser():
+    print("*** maintain")
+    # populate the form with the entry from the database
+    conn = sql_handling.create_connection(db)
+    query = "select username, password, firstname, surname, email from users where username = '{0}' and password = '{1}'".format(username_newuserwindow.value, password_newuserwindow.value)
+    print (query)
+    rows = sql_handling.query_connection(conn, query)
+    if (len(rows) == 1):
+        print("one row found")
+        print(rows)
+        username_maintainwindow.value = rows[0][0]
+        password_maintainwindow.value = rows[0][1]
+        firstname_maintainwindow.value = rows[0][2]
+        surname_maintainwindow.value = rows[0][3]
+        email_maintainwindow.value = rows[0][4]
+    # make the maintain window visible
+    maintainwindow.show(wait=True)
+
+def updateuser_frommaintain():
+    print("*** updateuser_frommaintain")
+    # use the values in the form to update the user details
+    conn = sql_handling.create_connection(db)
+    sql_statement = "update users set username = '{0}', password = '{1}', firstname = '{2}', surname = '{3}', email = '{4}' where username = '{0}' and password = '{1}'".format(username_maintainwindow.value, password_maintainwindow.value, firstname_maintainwindow.value, surname_maintainwindow.value, email_maintainwindow.value)
+    print (sql_statement)
+    row = sql_handling.execute_sql(conn, sql_statement)
+    print(row)
+    maintainwindow.hide()
+
+def cancel_frommaintain():
+    print("*** cancel_frommaintain")
+    maintainwindow.hide()
+
+def deleteuser_frommaintain():
+    print("*** deleteuser_frommaintain")
+    conn = sql_handling.create_connection(db)
+    sql_statement = "delete from users where username = '{0}' and password = '{1}'".format(username_maintainwindow.value, password_maintainwindow.value)
+    print (sql_statement)
+    row = sql_handling.execute_sql(conn, sql_statement)
+    maintainwindow.hide()
+
 create_booking_db.delete_db(db)
 create_booking_db.init_db(db,sql)
 
@@ -114,18 +159,39 @@ loginbutton_main = PushButton(app, command = login, text = 'Login', grid=[2,0])
 logoutbutton_main = PushButton(app, command = add, text = 'Add user', grid=[3,0])
 
 newuserwindow = Window(app, title='New user', visible=False, layout='grid')
-userprompt_newuser = Text(newuserwindow, text='username', grid=[0,0])
-username_newuser = TextBox(newuserwindow, grid=[1,0], )
-passprompt_newuser = Text(newuserwindow, text='password', grid=[0,1])
-password_newuser = TextBox(newuserwindow, hide_text=True, grid=[1,1])
-loginbutton_newuser = PushButton(newuserwindow, command = adduser, text = 'Add', grid=[2,0])
-logoutbutton_newuser = PushButton(newuserwindow, command = cancel, text = 'Cancel', grid=[3,0])
+userprompt_newuserwindow = Text(newuserwindow, text='username', grid=[0,0])
+username_newuserwindow = TextBox(newuserwindow, grid=[1,0], )
+passprompt_newuserwindow = Text(newuserwindow, text='password', grid=[0,1])
+password_newuserwindow = TextBox(newuserwindow, hide_text=True, grid=[1,1])
+firstnameprompt_newuserwindow = Text(newuserwindow, text='firstname', grid=[0,2])
+firstname_newuserwindow = TextBox(newuserwindow, grid=[1,2])
+surnameprompt_newuserwindow = Text(newuserwindow, text='surname', grid=[0,3])
+surname_newuserwindow = TextBox(newuserwindow, grid=[1,3])
+emailprompt_newuserwindow = Text(newuserwindow, text='email', grid=[0,4])
+email_newuserwindow = TextBox(newuserwindow, grid=[1,4])
+addbutton_newuser = PushButton(newuserwindow, command = adduser, text = 'Add', grid=[0,5])
+maintainbutton_newuserwindow = PushButton(newuserwindow, command = maintainuser, text = 'Maintain', grid=[1,5])
+cancelbutton_newuserwindow = PushButton(newuserwindow, command = cancel, text = 'Cancel', grid=[2,5])
 
 addentry_window = Window(app, title='Add an entry', visible = False, layout='grid')
-newentry_window = TextBox(addentry_window, grid=[0,0])
-newentryprompt_window = PushButton(addentry_window, text='Add', command = addentry, grid = [1,0])
-#oldentries = TextBox(addentry_window, text=getoldentries(), grid = [0,1], multiline=True, height=10, width=40, scrollbar=True, enabled=True)
+newentry_entrywindow = TextBox(addentry_window, grid=[0,0])
+newentryprompt_entrywindow = PushButton(addentry_window, text='Add', command = addentry, grid = [1,0])
 oldentries = ListBox(addentry_window, items=getoldentries_raw(), grid = [0,1], enabled=True, command=listentries, multiselect=False)
-deletelast_window = PushButton(addentry_window, text='Delete latest', command=deletelatest, grid=[1,1])
+deletelast_entrywindow = PushButton(addentry_window, text='Delete latest', command=deletelatest, grid=[1,1])
+
+maintainwindow = Window(app, title='Maintain user', visible = False, layout='grid')
+usernameprompt_maintainwindow = Text(maintainwindow, text='username', grid=[0,0])
+username_maintainwindow = TextBox(maintainwindow, grid=[1,0])
+passwordprompt_maintainwindow = Text(maintainwindow, text='password', grid=[0,1])
+password_maintainwindow = TextBox(maintainwindow, hide_text=True, grid=[1,1])
+firstnameprompt_maintainwindow = Text(maintainwindow, text='firstname', grid=[0,2])
+firstname_maintainwindow = TextBox(maintainwindow, grid=[1,2])
+surnameprompt_maintainwindow = Text(maintainwindow, text='surname', grid=[0,3])
+surname_maintainwindow = TextBox(maintainwindow, grid=[1,3])
+emailprompt_maintainwindow = Text(maintainwindow, text='email', grid=[0,4])
+email_maintainwindow = TextBox(maintainwindow, grid=[1,4])
+updatebutton_maintainwindow = PushButton(maintainwindow, command = updateuser_frommaintain, text = 'Update', grid=[1,5])
+deletebutton_maintainwindow = PushButton(maintainwindow, command = deleteuser_frommaintain, text = 'Delete', grid=[2,5])
+cancelbutton_maintainwindow = PushButton(maintainwindow, command = cancel_frommaintain, text = 'Cancel', grid=[3,5])
 
 app.display()
