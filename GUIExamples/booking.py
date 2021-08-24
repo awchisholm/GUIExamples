@@ -66,8 +66,9 @@ def get_available_dates():
     return(dates)
 
 def date_chosen():
-    datefeedback.visible=False
-    book_button.visible=False
+    datefeedback.visible = False
+    datefeedback.value = "kkkk"
+    book_button.visible = False
     chosen_date = date_chooser.value
     conn = sql_handling.create_connection(db)
     query = """select slots.maximum_available - total(bookings.number)
@@ -78,7 +79,7 @@ def date_chosen():
     availability = sql_handling.query_connection(conn, query)
     available_slots = int(availability[0][0])
     datefeedback.value = "" + str(available_slots) + " slots available"
-    datefeedback.visible=True
+    datefeedback.visible = True
     if available_slots > 18:
         book_button.visible=True
     print(availability[0][0])
