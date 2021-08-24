@@ -22,6 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="adduser_example.py" />
     <Compile Include="booking.py" />
     <Compile Include="create_booking_db.py" />
     <Compile Include="GUIExamples.py" />
@@ -64,10 +65,13 @@
     </Interpreter>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BookingSystemSteps.xlsx" />
+    <Content Include="create_adduser.sql" />
     <Content Include="create_booking_db.sql" />
     <Content Include="ps3.csv" />
     <Content Include="requirements.txt" />
     <Content Include="example.sql" />
+    <Content Include="simple_entry.vsdx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

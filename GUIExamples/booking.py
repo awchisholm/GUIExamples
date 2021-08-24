@@ -82,6 +82,10 @@ def date_chosen():
 
 def book_now():
     print('Book now')
+    # insert into customers (customerid, firstname, surname) values (3, 'Steve', 'Woods')
+    # INSERT into bookings (bookingid, customerid, slotid, number)   values(5, 3, 3, 2)
+    # delete from bookings where bookingid = 5
+    # delete from customers where customerid=3
 
 app = App(title="Booking")
 loginstatus = Text(app)
@@ -96,17 +100,14 @@ password = TextBox(login_window, hide_text=True, grid=[1,1])
 okpass = PushButton(login_window, command = login, text = 'OK', grid=[1,2])
 login_button = PushButton(app, command = showlogin, text = 'Login')
 logout_button = PushButton(app, command = logout, text = 'Logout')
-
 booking_button = PushButton(app, command=handle_booking, text = 'Booking')
 
 booking_window = Window(app, title='Booking', height=300, width=600, layout='grid')
 booking_window.hide()
-
 datetext = Text(booking_window, 'Choose date', grid=[0,0])
 date_chooser = ListBox(booking_window, items=get_available_dates(), command = date_chosen, grid=[0,1])
 datefeedback = Text(booking_window, 'Chosen date', grid=[1,0])
 datefeedback.visible=False
-
 book_button = PushButton(booking_window, command=book_now, text='Book Now', grid=[1,1])
 book_button.visible=False
 
