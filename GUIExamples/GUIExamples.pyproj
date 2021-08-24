@@ -31,6 +31,7 @@
     <Compile Include="guizero_example.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="joke.py" />
     <Compile Include="matplotlib_example.py">
       <SubType>Code</SubType>
     </Compile>
