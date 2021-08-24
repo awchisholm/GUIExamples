@@ -67,7 +67,7 @@ def get_available_dates():
 
 def date_chosen():
     datefeedback.visible = False
-    datefeedback.value = "kkkk"
+    datefeedback.value = ""
     book_button.visible = False
     chosen_date = date_chooser.value
     conn = sql_handling.create_connection(db)
@@ -78,19 +78,29 @@ def date_chosen():
 	           where slots.date like '%""" + chosen_date + "%'"
     availability = sql_handling.query_connection(conn, query)
     available_slots = int(availability[0][0])
-    datefeedback.value = "" + str(available_slots) + " slots available"
-    datefeedback.visible = True
+    
     if available_slots > 18:
-        book_button.visible=True
-    print(availability[0][0])
+        book_button.visible = True
+        datefeedback.value = "" + str(available_slots) + " slots available on " + chosen_date
+        datefeedback.visible = True
+    else:
+        book_button.visible = False
+        datefeedback.value = ""
+        datefeedback.visible = False
+    print(available_slots)
     print(query)
 
 def book_now():
     print('Book now')
+    print(date_chooser.value)
     # Check there are some bookings to be had
     # get details of customer
     # insert into the customer table if required
     # 
+    # Choose the first customer for now
+    chosen_customer.id = 1
+    # Find the next id in the bookings table
+
     # insert into customers (customerid, firstname, surname) values (3, 'Steve', 'Woods')
     # INSERT into bookings (bookingid, customerid, slotid, number)   values(5, 3, 3, 2)
     # delete from bookings where bookingid = 5
@@ -115,7 +125,7 @@ booking_window = Window(app, title='Booking', height=300, width=600, layout='gri
 booking_window.hide()
 datetext = Text(booking_window, 'Choose date', grid=[0,0])
 date_chooser = ListBox(booking_window, items=get_available_dates(), command = date_chosen, grid=[0,1])
-datefeedback = Text(booking_window, 'Chosen date', grid=[1,0])
+datefeedback = Text(booking_window, 'Chosen date......', grid=[1,0])
 datefeedback.visible=False
 book_button = PushButton(booking_window, command=book_now, text='Book Now', grid=[1,1])
 book_button.visible=False
