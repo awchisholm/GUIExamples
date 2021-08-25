@@ -11,6 +11,7 @@ create_booking_db.init_db(db,sql)
 
 loggedin = False
 user = ""
+slotid = 0
 
 def show_login_status():
     if loggedin == True:
@@ -66,20 +67,22 @@ def get_available_dates():
     return(dates)
 
 def date_chosen():
+    global slotid
     datefeedback.visible = False
     datefeedback.value = ""
     book_button.visible = False
     chosen_date = date_chooser.value
     conn = sql_handling.create_connection(db)
-    query = """select slots.maximum_available - total(bookings.number)
+    query = """select slots.maximum_available - total(bookings.number), slots.rowid
 	           from slots 
 	           left join bookings 
-	           on slots.slotid=bookings.slotid 
+	           on slots.rowid=bookings.slotid 
 	           where slots.date like '%""" + chosen_date + "%'"
     availability = sql_handling.query_connection(conn, query)
     available_slots = int(availability[0][0])
+    slotid = availability[0][1]
     
-    if available_slots > 18:
+    if available_slots > 0:
         book_button.visible = True
         datefeedback.value = "" + str(available_slots) + " slots available on " + chosen_date
         datefeedback.visible = True
@@ -88,18 +91,32 @@ def date_chosen():
         datefeedback.value = ""
         datefeedback.visible = False
     print(available_slots)
+    print(slotid)
     print(query)
 
 def book_now():
     print('Book now')
     print(date_chooser.value)
+    print(slotid)
     # Check there are some bookings to be had
     # get details of customer
     # insert into the customer table if required
     # 
     # Choose the first customer for now
-    chosen_customer.id = 1
+    chosen_customer_id = 1
+    # Set the number to book to be 2 for now
+    number_to_book = 2
+    # Get the rowid of the slot we are using
+
     # Find the next id in the bookings table
+    #query = "insert into bookings (customerid, slotid, number) values (" + str(chosen_customer_id) + str(slotid) + str(number_to_book) +")"
+    querystring = "insert into bookings (customerid, slotid, number) values ({customerid}, {slotid}, {number_to_book})"
+    query = querystring.format(customerid=int(chosen_customer_id), slotid=int(slotid), number_to_book=int(number_to_book))
+
+    print(query)
+
+    conn = sql_handling.create_connection(db)
+    availability = sql_handling.execute_sql(conn, query)
 
     # insert into customers (customerid, firstname, surname) values (3, 'Steve', 'Woods')
     # INSERT into bookings (bookingid, customerid, slotid, number)   values(5, 3, 3, 2)
