@@ -73,7 +73,7 @@ def date_chosen():
     book_button.visible = False
     chosen_date = date_chooser.value
     conn = sql_handling.create_connection(db)
-    query = """select slots.maximum_available - total(bookings.number), slots.rowid
+    query = """select slots.maximum_available - total(bookings.number), slots.slotid
 	           from slots 
 	           left join bookings 
 	           on slots.rowid=bookings.slotid 
