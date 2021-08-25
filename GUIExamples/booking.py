@@ -108,7 +108,6 @@ def book_now():
     number_to_book = 2
     # Get the rowid of the slot we are using
 
-    # Find the next id in the bookings table
     #query = "insert into bookings (customerid, slotid, number) values (" + str(chosen_customer_id) + str(slotid) + str(number_to_book) +")"
     querystring = "insert into bookings (customerid, slotid, number) values ({customerid}, {slotid}, {number_to_book})"
     query = querystring.format(customerid=int(chosen_customer_id), slotid=int(slotid), number_to_book=int(number_to_book))
@@ -142,7 +141,7 @@ booking_window = Window(app, title='Booking', height=300, width=600, layout='gri
 booking_window.hide()
 datetext = Text(booking_window, 'Choose date', grid=[0,0])
 date_chooser = ListBox(booking_window, items=get_available_dates(), command = date_chosen, grid=[0,1])
-datefeedback = Text(booking_window, 'Chosen date......', grid=[1,0])
+datefeedback = Text(booking_window, '', grid=[1,0])
 datefeedback.visible=False
 book_button = PushButton(booking_window, command=book_now, text='Book Now', grid=[1,1])
 book_button.visible=False
