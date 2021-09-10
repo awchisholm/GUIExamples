@@ -3,14 +3,16 @@ from contextlib import closing
 import os
 
 def init_db(database_file, database_sql):
-    with closing(connect_db(database_file)) as db:
-        with open(database_sql, mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
+    conn = sqlite3.connect(database_file)   # open the sqlite database file
+    cursor = conn.cursor()                  # connect to it and get a cursor - this is like a placeholder in the database
+    script = open(database_sql, 'r')        # open the script file containing SQL
+    sql = script.read()                     # read the contents of the script into a string called sql
+    cursor.executescript(sql)               # execute the SQL 
+    conn.commit()                           # commit the changes to make them permanent
+    conn.close()                            # close the connection to the database
 
 def connect_db(database_file):
     return sqlite3.connect(database_file)
-
 
 def delete_db(database_file):
     if os.path.exists(database_file):
