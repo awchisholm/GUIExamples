@@ -2,8 +2,9 @@ import sqlite3
 from sqlite3 import Error
 
 def create_connection(db_file):
-    """ create a database connection to the SQLite database
-        specified by the db_file
+    """ 
+    Create a database connection to the SQLite database
+     specified by the db_file
     :param db_file: database file
     :return: Connection object or None
     """
@@ -17,7 +18,8 @@ def create_connection(db_file):
 
 def query_connection(db_file, query):
     """
-    Query the database using the connection
+    Query the database 
+     and return a list with the results in
     :param db_file: database file
     :param query: query string
     :return: Result as a list
@@ -32,10 +34,10 @@ def query_connection(db_file, query):
 
 def execute_sql(db_file, sql_statement):
     """
-    Execute the provided SQL using the connection
+    Execute the provided SQL into the database
     :param db_file: database file
     :param sql_statement: sql string
-    :return: nothing
+    :return: the last row id 
     """
     conn = create_connection(db_file)
     conn.execute("PRAGMA foreign_keys = 1")
