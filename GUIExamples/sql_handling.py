@@ -15,30 +15,34 @@ def create_connection(db_file):
 
     return conn
 
-def query_connection(conn, query):
+def query_connection(db_file, query):
     """
     Query the database using the connection
-    :param conn: connection object
+    :param db_file: database file
     :param query: query string
     :return: Result as a list
     """
+    conn = create_connection(db_file)
     cur = conn.cursor()
     cur.execute(query)
     rows = cur.fetchall()
     cur.close()
+    conn.close()
     return rows
 
-def execute_sql(conn, sql_statement):
+def execute_sql(db_file, sql_statement):
     """
     Execute the provided SQL using the connection
-    :param conn: connection object
+    :param db_file: database file
     :param sql_statement: sql string
     :return: nothing
     """
+    conn = create_connection(db_file)
     conn.execute("PRAGMA foreign_keys = 1")
     cur = conn.cursor()
     cur.execute(sql_statement)
     conn.commit()
+    conn.close()
     return cur.lastrowid
 
 if __name__ == '__main__':

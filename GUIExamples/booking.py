@@ -5,9 +5,9 @@ import hashlib
 from datetime import datetime
 
 db = "booking_database.db"
-sql = 'create_booking_db.sql'
+sql_ddl_file = 'create_booking_db.sql'
 create_booking_db.delete_db(db)
-create_booking_db.init_db(db,sql)
+create_booking_db.init_db(db, sql_ddl_file)
 
 loggedin = False
 user = ""
@@ -27,13 +27,11 @@ def showlogin():
 def login():
     global loggedin
     global user
-    conn = sql_handling.create_connection(db)
     m = hashlib.sha256()
     m.update(password.value.encode())
     hashed_password = m.hexdigest()
     query = "select password from administrators where username = '{0}' and password = '{1}'".format(username.value, hashed_password)
-    rows = sql_handling.query_connection(conn, query)
-    conn.close()
+    rows = sql_handling.query_connection(db, query)
     loggedin = False
     user = ''
     if len(rows) == 1:
@@ -58,12 +56,9 @@ def handle_booking():
     booking_window.show()
 
 def get_available_dates():
-    conn = sql_handling.create_connection(db)
     query = "select distinct slots.date from slots order by date asc"
-    rows = sql_handling.query_connection(conn, query)
-    #dates = [row[0].strftime("%m/%d/%Y, %H:%M:%S") for row in rows]
+    rows = sql_handling.query_connection(db, query)
     dates = [row[0].strftime("%Y-%m-%d %H:%M:%S") for row in rows]
-    #.strftime("%m/%d/%Y, %H:%M:%S")
     return(dates)
 
 def date_chosen():
@@ -72,13 +67,12 @@ def date_chosen():
     datefeedback.value = ""
     book_button.visible = False
     chosen_date = date_chooser.value
-    conn = sql_handling.create_connection(db)
     query = """select slots.maximum_available - total(bookings.number), slots.slotid
 	           from slots 
 	           left join bookings 
 	           on slots.rowid=bookings.slotid 
 	           where slots.date like '%""" + chosen_date + "%'"
-    availability = sql_handling.query_connection(conn, query)
+    availability = sql_handling.query_connection(db, query)
     available_slots = int(availability[0][0])
     slotid = availability[0][1]
     
@@ -108,19 +102,12 @@ def book_now():
     number_to_book = 2
     # Get the rowid of the slot we are using
 
-    #query = "insert into bookings (customerid, slotid, number) values (" + str(chosen_customer_id) + str(slotid) + str(number_to_book) +")"
     querystring = "insert into bookings (customerid, slotid, number) values ({customerid}, {slotid}, {number_to_book})"
     query = querystring.format(customerid=int(chosen_customer_id), slotid=int(slotid), number_to_book=int(number_to_book))
 
     print(query)
 
-    conn = sql_handling.create_connection(db)
-    availability = sql_handling.execute_sql(conn, query)
-
-    # insert into customers (customerid, firstname, surname) values (3, 'Steve', 'Woods')
-    # INSERT into bookings (bookingid, customerid, slotid, number)   values(5, 3, 3, 2)
-    # delete from bookings where bookingid = 5
-    # delete from customers where customerid=3
+    availability = sql_handling.execute_sql(db, query)
 
 app = App(title="Booking")
 loginstatus = Text(app)
