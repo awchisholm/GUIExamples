@@ -11,6 +11,7 @@ create_booking_db.init_db(db, sql_ddl_file)
 
 loggedin = False
 user = ""
+userid = 0
 slotid = 0
 
 def show_login_status():
@@ -27,17 +28,20 @@ def showlogin():
 def login():
     global loggedin
     global user
+    global userid
     m = hashlib.sha256()
     m.update(password.value.encode())
     hashed_password = m.hexdigest()
-    query = "select password from administrators where username = '{0}' and password = '{1}'".format(username.value, hashed_password)
+    query = "select * from administrators where username = '{0}' and password = '{1}'".format(username.value, hashed_password)
     rows = sql_handling.query_connection(db, query)
+    print(rows[0][0])
     loggedin = False
     user = ''
     if len(rows) == 1:
         # We have logged in 
         loggedin = True
         user = username.value
+        userid = rows[0][0]
     
     show_login_status()
     login_window.hide()
