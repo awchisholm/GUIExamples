@@ -3,11 +3,12 @@ import sql_handling
 import create_booking_db
 import hashlib
 from datetime import datetime
+import time
 
 db = "booking_database.db"
 sql_ddl_file = 'create_booking_db.sql'
-create_booking_db.delete_db(db)
-create_booking_db.init_db(db, sql_ddl_file)
+#create_booking_db.delete_db(db)
+#create_booking_db.init_db(db, sql_ddl_file)
 
 loggedin = False
 user = ""
@@ -110,8 +111,11 @@ def book_now():
     query = querystring.format(customerid=int(chosen_customer_id), slotid=int(slotid), number_to_book=int(number_to_book))
 
     print(query)
-
+    start_the_clock = time.perf_counter()
     availability = sql_handling.execute_sql(db, query)
+    stop_the_clock = time.perf_counter()
+    time_diff = stop_the_clock - start_the_clock
+    print(time_diff, 'performance in seconds')
 
 app = App(title="Booking")
 loginstatus = Text(app)
