@@ -363,3 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 /GUIExamples/env
 GUIExamples/booking_database.db
+GUIExamples/default-3c2829fb-4043-42e5-bc8b-7623d66746be.ipynb
+GUIExamples/default-7dd74f67-4688-4bc7-8a9c-78dbdde7f257.ipynb
+GUIExamples/.ipynb_checkpoints/default-3c2829fb-4043-42e5-bc8b-7623d66746be-checkpoint.ipynb
+GUIExamples/.ipynb_checkpoints/default-7dd74f67-4688-4bc7-8a9c-78dbdde7f257-checkpoint.ipynb
