@@ -11,7 +11,7 @@ insert = "insert into bookings (customerid, slotid, number) values (2, 2, 2)"
 for index in range(100000):
     if insertFlag:
         sql_handling.execute_sql(db, insert)
-        time.sleep(0.01)
+        #time.sleep(0.0001)
     else:
        rows = sql_handling.query_connection(db, query)
 
