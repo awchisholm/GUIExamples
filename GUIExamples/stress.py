@@ -1,19 +1,15 @@
-import sql_handling 
-import time
+import sqlite3
+
+def query_connection(db_file, query):
+    conn = sqlite3.connect(db_file, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+    cur = conn.cursor()
+    cur.execute(query)
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    return rows
 
 db = "booking_database.db"
-
-insertFlag = True
-
 query = "select * from bookings"
-insert = "insert into bookings (customerid, slotid, number) values (2, 2, 2)"
-
-for index in range(100000):
-    if insertFlag:
-        sql_handling.execute_sql(db, insert)
-        #time.sleep(0.0001)
-    else:
-       rows = sql_handling.query_connection(db, query)
-
-#availability = sql_handling.execute_sql(db, query)
-# insert into bookings (customerid, slotid, number) values (2, 2, 2)
+for index in range(100):
+    rows = query_connection(db, query)
