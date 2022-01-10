@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 db = "booking_database.db"
 
 app=App()
-slider = Slider(app, start=100, end=1000)
+slider = Slider(app, start=100, end=10000)
 
 def measure_db():
     loop_counter = int(slider.value)

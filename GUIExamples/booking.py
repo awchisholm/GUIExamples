@@ -7,8 +7,8 @@ import time
 
 db = "booking_database.db"
 sql_ddl_file = 'create_booking_db.sql'
-#create_booking_db.delete_db(db)
-#create_booking_db.init_db(db, sql_ddl_file)
+create_booking_db.delete_db(db)
+create_booking_db.init_db(db, sql_ddl_file)
 
 loggedin = False
 user = ""
