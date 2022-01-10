@@ -45,11 +45,15 @@
     <Compile Include="module1.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="measure_stress.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="multiple_format_image_viewer.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="sql_handling.py" />
     <Compile Include="stress.py" />
+    <Compile Include="stress_db.py" />
     <Compile Include="tkinter_example.py">
       <SubType>Code</SubType>
     </Compile>
