@@ -7,11 +7,22 @@ import matplotlib.pyplot as plt
 db = "booking_database.db"
 
 app=App()
+lbl_name = Text(app, text='Select number of iterations')
 slider = Slider(app, start=100, end=10000)
+
+def plot_timings(timings, filename):
+    plt.plot(timings)
+    plt.title('Time per iteration')
+    plt.xlabel('Iteration')
+    plt.ylabel('Time in seconds')
+    plt.savefig(filename)
+    p = plt.close()
+    picture.image = filename
+    picture.visible = True
 
 def measure_db():
     loop_counter = int(slider.value)
-    print('Measuring stress')
+    print('Measuring query performance')
     query = "select * from bookings"
     start_the_clock = time.perf_counter()
     inside_timings = []
@@ -26,21 +37,14 @@ def measure_db():
     time_diff = stop_the_clock - start_the_clock
     time_per_record = time_diff / loop_counter
 
-    plt.plot(inside_timings)
-    plt.title('Time per iteration')
-    plt.xlabel('Iteration')
-    plt.ylabel('Time in seconds')
-    plt.savefig('inside_timings.png')
-    p = plt.close()
-    picture.image = 'inside_timings.png'
-    picture.visible = True
+    plot_timings(inside_timings, 'inside_timings.png')
 
     print(f'Fetch performance for {loop_counter} records {time_diff}')
-    print(f'Time for 1 fetch {time_per_record}')
-    print('Ending measuring stress')
+    print(f'Average time for 1 record {time_per_record}')
+    print('Ending measuring query performance')
     
-lbl_name = Text(app, text='Measure fetch')
-btn_go = PushButton(app, command=measure_db, text='Measure fetch performance')
+#lbl_name = Text(app, text='Measure query performance')
+btn_go = PushButton(app, command=measure_db, text='Measure query performance')
 picture = Picture(app, image='inside_timings.png')
 picture.visible = False
 
