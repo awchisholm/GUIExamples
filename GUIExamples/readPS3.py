@@ -26,10 +26,12 @@ def handleCombo(selected_value):
     global selectedYear
     selectedYear = selected_value
     print(selected_value)
-    items = listbox.items
-    for item in items:
+    for item in listbox.items:
         listbox.remove(item)
-
+    for item in secondlistbox.items:
+        secondlistbox.remove(item)
+    for item in thirdlistbox.items:
+        thirdlistbox.remove(item)
     q1 = f"""
     select Publisher, year, count(*) as NumberOfGames, sum(Global_Sales) as TotalGlobalSales
     from ps3 where year = {selected_value}
@@ -44,9 +46,10 @@ def handleListItem(value):
     global selectedYear
     global selectedPublisher
     selectedPublisher = value
-    items = secondlistbox.items
-    for item in items:
+    for item in secondlistbox.items:
         secondlistbox.remove(item)
+    for item in thirdlistbox.items:
+        thirdlistbox.remove(item)
     q1 = f"select * from ps3 where year = {selectedYear} and Publisher = '{selectedPublisher}' order by Global_Sales desc"
     print(q1)
     rows = do_query(q1)
@@ -56,8 +59,7 @@ def handleListItem(value):
 def handlesecondlistitem(value):
     global selectedYear
     global selectedPublisher
-    items = thirdlistbox.items
-    for item in items:
+    for item in thirdlistbox.items:
         thirdlistbox.remove(item)
     q1 = f'select * from ps3 where year = {selectedYear} and Publisher = "{selectedPublisher}" and Name = "{value}"'
     rows = do_query(q1)
