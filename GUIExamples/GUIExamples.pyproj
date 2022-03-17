@@ -26,6 +26,7 @@
     <Compile Include="booking.py" />
     <Compile Include="create_booking_db.py" />
     <Compile Include="GUIExamples.py" />
+    <Compile Include="gz_html.py" />
     <Compile Include="InteractiveWindow.py">
       <SubType>Code</SubType>
     </Compile>
@@ -51,6 +52,8 @@
     <Compile Include="multiple_format_image_viewer.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="readPS3.py" />
+    <Compile Include="readPS3_broken.py" />
     <Compile Include="sql_handling.py" />
     <Compile Include="stress.py" />
     <Compile Include="stress_db.py" />
@@ -63,6 +66,7 @@
     <Content Include="create_adduser.sql" />
     <Content Include="create_booking_db.sql" />
     <Content Include="ps3.csv" />
+    <Content Include="ps3.db" />
     <Content Include="requirements.txt" />
     <Content Include="example.sql" />
     <Content Include="simple_entry.vsdx" />

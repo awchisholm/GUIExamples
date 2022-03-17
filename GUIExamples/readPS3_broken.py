@@ -5,7 +5,7 @@ import sqlite3
 selectedYear = 2006
 
 def do_query(q):
-    con = sqlite3.connect('ps3.db')
+    con = sqlite3.connect('/mydatabase/ps3.db')
     cur = con.cursor()
     cur.execute(q)
     rows = cur.fetchall()
@@ -50,7 +50,7 @@ def handleListItem(value):
         secondlistbox.remove(item)
     for item in thirdlistbox.items:
         thirdlistbox.remove(item)
-    q1 = f"select * from ps3 where year = {selectedYear} and Publisher = '{selectedPublisher}' order by Global_Sales desc"
+    q1 = f"select * from ps3 where year = {selectedYear} and Publisher = '{selectedPublisher}' order by Global_Sales asc"
     print(q1)
     rows = do_query(q1)
     for row in rows:
@@ -61,7 +61,7 @@ def handlesecondlistitem(value):
     global selectedPublisher
     for item in thirdlistbox.items:
         thirdlistbox.remove(item)
-    q1 = f'select * from ps3 where year = {selectedYear} and Publisher = "{selectedPublisher}" and Name = "{value}"'
+    q1 = f'select * from myps3 where year = {selectedYear} and Publisher = "{selectedPublisher}" and Name = "{value}"'
     rows = do_query(q1)
     for row in rows:
         onerow = f"Name:{row[0]}. Global Sales:{row[8]}"

@@ -1,4 +1,4 @@
-from guizero import App, Text
+from guizero import App, Text, PushButton
 from tkinter import Label
 import webbrowser
 
@@ -12,5 +12,10 @@ def handle_webbrowser(event):
 link = Label(app.tk, text="http://stackoverflow.com", fg="blue", cursor="hand2")
 link.bind("<Button-1>", handle_webbrowser)
 
+def handle_push():
+    webbrowser.open('http://hsdc.ac.uk')
+
 app.add_tk_widget(link)
+pb = PushButton(app, command=handle_push)
+
 app.display()
