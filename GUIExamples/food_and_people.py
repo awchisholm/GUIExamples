@@ -1,3 +1,4 @@
+from platform import python_version_tuple
 from guizero import App, Combo, Text, Window, PushButton, ListBox
 import sqlite3
 from contextlib import closing
@@ -12,6 +13,15 @@ def do_query(database, q):
     rows = cur.fetchall()
     cur.close()
     return(rows)
+    
+def execute_sql(db_file, sql_statement):
+    conn = create_connection(db_file)
+    conn.execute("PRAGMA foreign_keys = 1")
+    cur = conn.cursor()
+    cur.execute(sql_statement)
+    conn.commit()
+    conn.close()
+    return cur.lastrowid
 
 def init_db(database_file, database_sql):
     conn = sqlite3.connect(database_file)   # open the sqlite database file
@@ -35,6 +45,24 @@ def handleFood():
     for row in food:
         onerow = f"{row[0]}"
         foodlistbox.append(onerow)
+    
+def handlePerson():
+    query = 'select FirstName from Person'
+    persons = do_query(database=database_file, q=query)
+    for person in persons:
+        onerow = f"{person[0]}"
+        personlistbox.append(onerow)
+
+def handleFavourites():
+    query = '''
+    select Person.FirstName, FoodAndBeverage.Food from Favourite
+    left join Person, FoodAndBeverage
+    on Favourite.PersonID=Person.ID and
+    Favourite.FoodID=FoodAndBeverage.ID'''
+    favourites = do_query(database=database_file, q=query)
+    for favourite in favourites:
+        onerow = f"{favourite[0]} : {favourite[1]}"
+        favouriteslistbox.append(onerow)
 
 database_sql = 'food.sql'
 delete_db(database_file)
@@ -43,5 +71,7 @@ init_db(database_file, database_sql)
 app = App()
 
 foodlistbox = ListBox(app, width='fill', command = handleFood)
+personlistbox = ListBox(app, width='fill', command = handlePerson)
+favouriteslistbox = ListBox(app, width='fill', command = handleFavourites)
 
 app.display()
